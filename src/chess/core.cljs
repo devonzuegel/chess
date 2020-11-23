@@ -37,9 +37,11 @@
                     (swap! app-state (fn [app-state] (update-selected-piece app-state x y))))
                   (do ; Place the piece in the new x,y coordinates
                     (print "Moving the piece that was at " x y " to _ _")
-                    (swap! app-state (fn [app-state] (assoc-in app-state [:board x y] (get-current-selected-piece app-state))))
-                    (swap! app-state (fn [app-state] (assoc-in app-state (concat [:board] (:selected-piece app-state)) nil)))
-                    (swap! app-state (fn [app-state] (clear-selected-piece app-state))))))}
+                    (swap! app-state (fn [app-state]
+                                       (-> app-state
+                                           (assoc-in [:board x y] (get-current-selected-piece app-state))
+                                           (assoc-in (concat [:board] (:selected-piece app-state)) nil)
+                                           (clear-selected-piece)))))))}
    x " " y " " piece])
 
 (defn show-selected-piece [state]
