@@ -1,16 +1,6 @@
-# TimelineJS
+# Chess
 
-This project comes out of [this idea that I tweeted](https://twitter.com/devonzuegel/status/1322723232034680832):
-
->
-> I'd love it if history books had little timelines on every page that displayed the entire time range discussed + dots corresponding to the date that events mentioned on that page occurred.
->
-> This would really help with developing intuition for relative chronology + cause-effect!
-
-You can find the mock for this project here: [🎨 Figma prototype](https://www.figma.com/proto/WCtjsMOhuRVIaJMnHtbKGx/Timeline.js?node-id=1%3A2&viewport=480%2C294%2C0.25218871235847473&scaling=contain)
-
-This is just as a side project so I probably won't document this project that well, but contributions are certainly welcome if you can figure out what I'm trying to do!
-
+This is just a fun Sunday night project I built to play around with Clojure.
 ## Setup
 
 To get an interactive development environment run:
