@@ -9,7 +9,7 @@
 
 (defonce app-state
   (atom
-   {:selected-piece [nil nil]
+   {:selected-piece nil
     :board [["rook", "knight", "bishop", "king", "queen", "bishop", "knight", "rook"]
             ["pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn"]
             ["-", "-", "-", "-", "-", "-", "-", "-"]
@@ -21,10 +21,17 @@
 
 ; (defn inc-counter [current-app-state] (update-in current-app-state [:counter] inc)) ;; No need to deref it
 (defn update-selected-piece [current-app-state x y] (assoc-in current-app-state [:selected-piece] [x y])) ;; No need to deref it
+(defn clear-selected-piece [current-app-state] (assoc-in current-app-state [:selected-piece] nil)) ;; No need to deref it
 
 (defn render-piece [x y piece]
   [:td
-   {:on-click (fn [e] (swap! app-state (fn [app-state] (update-selected-piece app-state x y))))}
+   {:on-click (fn [e]
+                (if (= (:selected-piece @app-state) nil)
+                  (do ; Pick up the piece
+                    (swap! app-state (fn [app-state] (update-selected-piece app-state x y))))
+                  (do ; Place the piece
+                    (print "Moving the piece that was at " x y " to _ _" (mod 5 2))
+                    (swap! app-state (fn [app-state] (clear-selected-piece app-state))))))}
    x " " y " " piece])
 
 (defn show-selected-piece [state]
@@ -40,7 +47,7 @@
      (show-selected-piece state)
      [:table
       (for [[x row] (map-indexed vector (:board state))]
-               (render-row x row))]]))
+        (render-row x row))]]))
 
 (rum/mount (hello-world)
            (. js/document (getElementById "app"))) ;; Here's how you use JS's dot operator
