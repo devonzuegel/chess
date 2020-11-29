@@ -3,18 +3,36 @@
 
 (enable-console-print!)
 
+(defn get-color [piece] (keyword (namespace piece)))
+(defn get-piece [piece] (keyword (name piece)))
+(defn render-piece-emoji [piece] (case piece
+                                   :black/bishop "♝"
+                                   :black/king "♚"
+                                   :black/knight "♞"
+                                   :black/pawn "♟"
+                                   :black/queen "♛"
+                                   :black/rook "♜"
+                                   :white/bishop "♗"
+                                   :white/king "♔"
+                                   :white/knight "♘"
+                                   :white/pawn "♙"
+                                   :white/queen "♕"
+                                   :white/rook "♖"
+                                   nil
+                                   ))
+
 ;; define your app data so that doesn't get over-written on reload
 (defonce app-state
   (atom
    {:selected-piece nil
-    :board [["rook ♖", "knight ♘", "bishop ♗", "king ♔", "queen ♕", "bishop ♗", "knight ♘", "rook ♖"]
-            ["pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙"]
+    :board [[:black/rook :black/knight :black/bishop :black/king :black/queen :black/bishop :black/knight :black/rook]
+            [:black/pawn :black/pawn :black/pawn :black/pawn :black/pawn :black/pawn :black/pawn :black/pawn]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
-            ["pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟"]
-            ["rook ♜", "knight ♞", "bishop ♝", "king ♚", "queen ♛", "bishop ♝", "knight ♞", "rook ♜"]]}))
+            [:white/rook :white/knight :white/bishop :white/king :white/queen :white/bishop :white/knight :white/rook]
+            [:white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn]]}))
 
 ; (defn inc-counter [current-app-state] (update-in current-app-state [:counter] inc)) ;; No need to deref it
 (defn update-selected-piece [current-app-state x y] (assoc-in current-app-state [:selected-piece] [x y])) ;; No need to deref it
@@ -27,6 +45,7 @@
 (defn render-piece [x y piece]
   [:td
    {:key y
+    :class (if (= (:selected-piece @app-state) [x y]) "selected" "not-selected")
     :on-click (fn [e]
                 (if (= (:selected-piece @app-state) nil)
                   (do ; Pick up the piece at the x,y coordinate
@@ -40,7 +59,7 @@
                                            (assoc-in (concat [:board] (:selected-piece app-state)) nil)
                                            (clear-selected-piece)))))))}
    [:span {:class "coordinates"} x "," y]
-   [:div {:class "piece-name"} piece]])
+   [:div {:class "piece-name"} (render-piece-emoji piece)]])
 
 (defn show-selected-piece [state]
   [:div "selected-piece: " (let [[_x _y] (:selected-piece state)] (str _x ", " _y))])

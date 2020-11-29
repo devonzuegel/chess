@@ -1,17 +1,3 @@
-table td {
-  text-align: left;
-  color: var(--color-text-primary);
-}
-
-tr:nth-child(even) td:nth-child(even),
-tr:nth-child(odd) td:nth-child(odd) {
-  background: #ddd;
-}
-tr:nth-child(odd) td:nth-child(even),
-tr:nth-child(even) td:nth-child(odd) {
-  background: white;
-}
-
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
     sans-serif, Apple Color Emoji, Segoe UI Emoji;
@@ -19,6 +5,29 @@ body {
   line-height: 1.5;
   background-color: var(--color-text-primary);
   color: var(--color-bg-canvas);
+}
+
+td {
+  text-align: left;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  height: 80px;
+  width: 80px;
+  vertical-align: top;
+}
+
+td.selected {
+  background: var(--color-scale-yellow-3) !important;
+}
+
+tr:nth-child(even) td:nth-child(even),
+tr:nth-child(odd) td:nth-child(odd) {
+  background: #ddd;
+}
+
+tr:nth-child(odd) td:nth-child(even),
+tr:nth-child(even) td:nth-child(odd) {
+  background: white;
 }
 
 span.coordinates {
@@ -29,8 +38,10 @@ span.coordinates {
 }
 
 .piece-name {
-  padding: 24px 12px;
+  padding-left: 24px;
+  padding-top: 24px;
   display: inline-block;
+  font-size: 2em;
 }
 
 /*!
