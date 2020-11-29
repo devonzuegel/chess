@@ -11,37 +11,48 @@ td {
   text-align: left;
   color: var(--color-text-primary);
   cursor: pointer;
-  height: 80px;
-  width: 80px;
+  height: 90px;
+  width: 90px;
   vertical-align: top;
-}
-
-td.selected {
-  background: var(--color-scale-yellow-3) !important;
 }
 
 tr:nth-child(even) td:nth-child(even),
 tr:nth-child(odd) td:nth-child(odd) {
   background: #ddd;
+  border: 2px solid #ddd;
 }
 
 tr:nth-child(odd) td:nth-child(even),
 tr:nth-child(even) td:nth-child(odd) {
   background: white;
+  border: 2px solid white;
 }
 
-span.coordinates {
+td:hover {
+  border: 2px solid black !important;
+}
+
+td.selected {
+  background: var(--color-scale-yellow-2) !important;
+  border: 2px solid var(--color-scale-yellow-8) !important;
+}
+
+.coordinates {
   font-size: .8em;
-  position: fixed;
+  position: inherit;
   padding: 2px;
   font-family: 'iA Writer Duo V';
 }
 
 .piece-name {
-  padding-left: 24px;
-  padding-top: 24px;
-  display: inline-block;
   font-size: 2em;
+  width: 100%;
+  text-align: center;
+  padding-top: 6px;
+}
+
+pre {
+  white-space: pre-wrap;
 }
 
 /*!
@@ -1400,11 +1411,6 @@ hr:before {
 .rule:after,
 hr:after {
   clear: both;
-}
-
-table {
-  border-spacing: 0;
-  border-collapse: collapse;
 }
 
 td,
