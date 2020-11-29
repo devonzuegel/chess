@@ -14,8 +14,8 @@
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
-            [:white/rook :white/knight :white/bishop :white/king :white/queen :white/bishop :white/knight :white/rook]
-            [:white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn]]}))
+            [:white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn :white/pawn]
+            [:white/rook :white/knight :white/bishop :white/king :white/queen :white/bishop :white/knight :white/rook]]}))
 
 (defn get-color [piece] (keyword (namespace piece)))
 
@@ -36,6 +36,10 @@
                                    :white/rook "♖"
                                    nil))
 
+(defn get-col [coords] (first coords))
+
+(defn get-row [coords] (second coords))
+
 ; (defn inc-counter [current-app-state] (update-in current-app-state [:counter] inc)) ;; No need to deref it
 (defn update-selected-piece [current-app-state col row] (assoc-in current-app-state [:selected-piece] [col row])) ;; No need to deref it
 
@@ -48,12 +52,17 @@
 
 (defn move-allowed? [new-coords current-coords]
   (let [selected-piece  (get-current-selected-piece @app-state)]
-    (print "current selected piece:" selected-piece)
-    (print (get-color selected-piece))
-    (print (get-piece selected-piece))
-    (print "new-coords:" new-coords "; current-coords" current-coords)
+    ; (print "current selected piece:" selected-piece)
+    ; (print (get-color selected-piece))
+    ; (print (get-piece selected-piece))
+    ; (print "new-coords:" new-coords "; current-coords" current-coords)
+    (and
+     (= :white (get-color selected-piece))
+     (= :pawn (get-piece selected-piece))
+     (= (get-col new-coords) (- (get-col current-coords) 1)) ; Can only move forward by 1
+     (= (get-row new-coords) (get-row current-coords)) ; Cannot move side-to-side
+     )))
   ; TODO: Add logic for testing if moves are allowed
-    true))
 
 (defn click-piece [col row e]
   (if (= (:selected-piece @app-state) nil)
@@ -64,7 +73,7 @@
       (do ; Place the piece in the new col,y coordinates
         ; (print "Moving the piece that was at " col row " to _ _")
         (swap! app-state (fn [app-state]
-                           (-> app-state 
+                           (-> app-state
                                ; This function threads the preceding return value as the front argument of the next fn
                                (assoc-in [:board col row] (get-current-selected-piece app-state))
                                (assoc-in (concat [:board] (:selected-piece app-state)) nil)
