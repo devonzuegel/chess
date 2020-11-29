@@ -42,22 +42,24 @@
 (defn get-current-selected-piece [current-app-state] (get-in current-app-state (concat [:board] (:selected-piece current-app-state))))
 ; (defn get-current-selected-piece [] [:board @app-state (:selected-piece @app-state)])
 
+(defn click-piece [x y e]
+        (if (= (:selected-piece @app-state) nil)
+          (do ; Pick up the piece at the x,y coordinate
+            (print "Pick up the piece")
+            (swap! app-state (fn [app-state] (update-selected-piece app-state x y))))
+          (do ; Place the piece in the new x,y coordinates
+            (print "Moving the piece that was at " x y " to _ _")
+            (swap! app-state (fn [app-state]
+                               (-> app-state
+                                   (assoc-in [:board x y] (get-current-selected-piece app-state))
+                                   (assoc-in (concat [:board] (:selected-piece app-state)) nil)
+                                   (clear-selected-piece)))))))
+
 (defn render-piece [x y piece]
   [:td
    {:key y
     :class (if (= (:selected-piece @app-state) [x y]) "selected" "not-selected")
-    :on-click (fn [e]
-                (if (= (:selected-piece @app-state) nil)
-                  (do ; Pick up the piece at the x,y coordinate
-                    (print "Pick up the piece")
-                    (swap! app-state (fn [app-state] (update-selected-piece app-state x y))))
-                  (do ; Place the piece in the new x,y coordinates
-                    (print "Moving the piece that was at " x y " to _ _")
-                    (swap! app-state (fn [app-state]
-                                       (-> app-state
-                                           (assoc-in [:board x y] (get-current-selected-piece app-state))
-                                           (assoc-in (concat [:board] (:selected-piece app-state)) nil)
-                                           (clear-selected-piece)))))))}
+    :on-click (partial click-piece x y)}
    [:span {:class "coordinates"} x "," y]
    [:div {:class "piece-name"} (render-piece-emoji piece)]])
 
