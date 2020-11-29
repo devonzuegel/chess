@@ -1,6 +1,5 @@
 table td {
-  padding: 24px 12px;
-  text-align: center;
+  text-align: left;
   color: var(--color-text-primary);
 }
 
@@ -22,6 +21,17 @@ body {
   color: var(--color-bg-canvas);
 }
 
+span.coordinates {
+  font-size: .8em;
+  position: fixed;
+  padding: 2px;
+  font-family: 'iA Writer Duo V';
+}
+
+.piece-name {
+  padding: 24px 12px;
+  display: inline-block;
+}
 
 /*!
  * @primer/css/core

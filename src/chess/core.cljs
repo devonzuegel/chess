@@ -10,14 +10,14 @@
 (defonce app-state
   (atom
    {:selected-piece nil
-    :board [["rook", "knight", "bishop", "king", "queen", "bishop", "knight", "rook"]
-            ["pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn"]
+    :board [["rook ♖", "knight ♘", "bishop ♗", "king ♔", "queen ♕", "bishop ♗", "knight ♘", "rook ♖"]
+            ["pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙", "pawn ♙"]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
             [nil, nil, nil, nil, nil, nil, nil, nil]
-            ["pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn", "pawn"]
-            ["rook", "knight", "bishop", "king", "queen", "bishop", "knight", "rook"]]}))
+            ["pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟", "pawn ♟"]
+            ["rook ♜", "knight ♞", "bishop ♝", "king ♚", "queen ♛", "bishop ♝", "knight ♞", "rook ♜"]]}))
 
 ; (defn inc-counter [current-app-state] (update-in current-app-state [:counter] inc)) ;; No need to deref it
 (defn update-selected-piece [current-app-state x y] (assoc-in current-app-state [:selected-piece] [x y])) ;; No need to deref it
@@ -42,7 +42,8 @@
                                            (assoc-in [:board x y] (get-current-selected-piece app-state))
                                            (assoc-in (concat [:board] (:selected-piece app-state)) nil)
                                            (clear-selected-piece)))))))}
-   x " " y " " piece])
+   [:span {:class "coordinates"} x "," y]
+   [:div {:class "piece-name"} piece]])
 
 (defn show-selected-piece [state]
   [:div "selected-piece: " (let [[_x _y] (:selected-piece state)] (str _x ", " _y))])
@@ -67,3 +68,4 @@
 ; - Define movement rules per-piece
 ; - Give the pieces colors
 ; - Add interaction for moving the pieces
+; - Track moves in an array
